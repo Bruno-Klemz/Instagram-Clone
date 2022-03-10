@@ -6,7 +6,7 @@ import 'package:instagram_clone/AppRouter.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MultiBlocProvider(
-    providers: AppBlocProvider().getAppBlocProvider(), 
+    providers: AppBlocProvider().getAppBlocProvider(),
     child: MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: 'initialRoute',
