@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.instagram_clone">
+    package="br.com.instagram_clone">
    <application
         android:label="instagram_clone"
         android:icon="@mipmap/ic_launcher">
