@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/DesignSystem/TextDesign.dart';
 
 class Perfil extends StatefulWidget {
   final layoutConstrains = PerfilLayoutConstrains();
@@ -9,6 +10,8 @@ class Perfil extends StatefulWidget {
 }
 
 class _PerfilState extends State<Perfil> {
+  final textDesign = TextDesign();
+
   @override
   void initState() {
     super.initState();
@@ -99,7 +102,7 @@ class _PerfilState extends State<Perfil> {
         SizedBox(
           child: Row(
             children: [
-              _buildText('brunoklemz', 22, FontWeight.bold),
+              textDesign.buildText('brunoklemz', 22, FontWeight.bold, Colors.black),
               Padding(
                 padding:
                     EdgeInsets.only(left: widget.layoutConstrains.textPadding),
@@ -170,11 +173,11 @@ class _PerfilState extends State<Perfil> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildText('Bruno Klemz', 15, FontWeight.w600),
+        textDesign.buildText('Bruno Klemz', 15, FontWeight.w600, Colors.black),
         Padding(
             padding: EdgeInsets.only(top: widget.layoutConstrains.textPadding),
-            child: _buildText(
-                'Engenharia Mecatrônica PUCPR', 15, FontWeight.normal)),
+            child: textDesign.buildText(
+                'Engenharia Mecatrônica PUCPR', 15, FontWeight.normal, Colors.black)),
       ],
     );
   }
@@ -187,7 +190,7 @@ class _PerfilState extends State<Perfil> {
             height: 41,
             child: OutlinedButton(
                 onPressed: () {},
-                child: _buildText('Editar perfil', 15, FontWeight.w600)),
+                child: textDesign.buildText('Editar perfil', 15, FontWeight.w600, Colors.black)),
           ),
         ),
         Padding(
@@ -213,12 +216,12 @@ class _PerfilState extends State<Perfil> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildText('Destaques dos stories', 15, FontWeight.w600),
+            textDesign.buildText('Destaques dos stories', 15, FontWeight.w600, Colors.black),
             Icon(Icons.keyboard_arrow_up)
           ],
         ),
-        _buildText("Mantenha seus stories favoritos no seu perfil", 14,
-            FontWeight.normal)
+        textDesign.buildText("Mantenha seus stories favoritos no seu perfil", 14,
+            FontWeight.normal, Colors.black)
       ],
     );
   }
@@ -301,22 +304,11 @@ class _PerfilState extends State<Perfil> {
     );
   }
 
-  Text _buildText(String title, double fontSize, FontWeight fontWeight) {
-    return Text(
-      title,
-      style: TextStyle(
-          fontFamily: 'Proxima Nova',
-          fontSize: fontSize,
-          fontWeight: fontWeight,
-          color: Colors.black),
-    );
-  }
-
   Column _buildMainLabels(String title, String subtitle) {
     return Column(
       children: [
-        _buildText(title, 17, FontWeight.bold),
-        _buildText(subtitle, 15, FontWeight.normal)
+        textDesign.buildText(title, 17, FontWeight.bold, Colors.black),
+        textDesign.buildText(subtitle, 15, FontWeight.normal, Colors.black)
       ],
     );
   }

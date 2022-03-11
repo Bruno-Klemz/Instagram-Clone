@@ -49,6 +49,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/placeholderPhoto.jpg
+    - assets/Instagram-Logo.png
+    - assets/facebook_logo.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

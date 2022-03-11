@@ -1,0 +1,12 @@
+Gerência de estado
+	BLoC
+
+Arquitetura
+	BLoC Pattern
+
+API
+	Firebase Auth
+	Firebase Storage
+
+REST 
+	Firebase Database
