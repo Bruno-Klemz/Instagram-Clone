@@ -27,11 +27,13 @@ class _LoginState extends State<Login> {
     layoutConstrains.horizontalPadding = horizontalPadding;
 
     return Scaffold(
-      body: SafeArea(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [_buildMainContainer(), _buildBottomContainer()],
-      )),
+      body: SingleChildScrollView(
+        child: SafeArea(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [_buildMainContainer(), _buildBottomContainer()],
+        )),
+      ),
     );
   }
 

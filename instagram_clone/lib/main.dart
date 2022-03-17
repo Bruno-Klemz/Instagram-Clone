@@ -11,7 +11,7 @@ Future<void> main() async {
       providers: AppBlocProvider().getAppBlocProvider(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: 'initialRoute',
+        initialRoute: 'toFeed',
         onGenerateRoute: AppRouter.navigate,
       )));
 }

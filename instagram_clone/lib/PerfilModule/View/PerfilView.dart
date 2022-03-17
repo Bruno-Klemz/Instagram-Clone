@@ -291,9 +291,9 @@ class _PerfilState extends State<Perfil> {
 
   Widget _buildGalleryGridView(List<ImageModel> galleryList) {
     return SizedBox(
-      height: 1000,
       width: MediaQuery.of(context).size.width,
       child: GridView.builder(
+        shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3, mainAxisSpacing: 10, crossAxisSpacing: 10),

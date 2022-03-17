@@ -16,6 +16,7 @@ class TextInputDesign {
       child: TextFormField(
         keyboardType: TextInputType.text,
         controller: controller,
+        obscureText: label == "Senha" ? true: false,
         validator: (String? value) {
           switch (state.runtimeType) {
             case LoginErrorState:
