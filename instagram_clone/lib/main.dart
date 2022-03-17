@@ -8,11 +8,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MultiBlocProvider(
-    providers: AppBlocProvider().getAppBlocProvider(),
-    child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: 'initialRoute',
-      onGenerateRoute: AppRouter.navigate,
-    )));
+      providers: AppBlocProvider().getAppBlocProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: 'initialRoute',
+        onGenerateRoute: AppRouter.navigate,
+      )));
 }
-

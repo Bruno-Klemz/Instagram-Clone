@@ -7,5 +7,6 @@ import 'LoginState.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc(LoginState initialState, Auth _auth) : super(initialState) {
     on<LoginEmailEvent>((event, emit) => _auth.signInWithEmail(event));
+    on<LoginErrorEvent>((event, emit) => emit(LoginErrorState(event.errorMessage)));
   }
 }

@@ -8,3 +8,9 @@ class LoginEmailEvent extends LoginEvent {
 
   LoginEmailEvent(this.login, this.password, this.context);
 }
+
+class LoginErrorEvent extends LoginEvent {
+  final String errorMessage;
+
+  LoginErrorEvent(this.errorMessage);
+}
