@@ -5,6 +5,7 @@
 * [Technologies](#technologies)
 * [Launch](#launch)
 * [Illustrations](#illustrations)
+* [Status](#status)
 
 ## Introduction
 📔 This project was developed in order to put into practice my concepts related to API consumption, state management, clean architecture and development of a pre-established design by a third party.
@@ -39,7 +40,7 @@ The minimum requirements to run the project are:
      height="527.778" />
   </p>
   
-## Project Status
+## Status
 - 🏆 Finished 
      
 
