@@ -38,6 +38,9 @@ The minimum requirements to run the project are:
      width="250" 
      height="527.778" />
   </p>
+  
+## Project Status
+- 🏆 Finished 
      
 
 
