@@ -1,9 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:instagram_clone/Data/User/UserModel.dart';
 import 'package:instagram_clone/DesignSystem/TextDesign.dart';
+import 'package:instagram_clone/PerfilModule/BLoC/ViewBLoC/PerfilBloc.dart';
+import 'package:instagram_clone/PerfilModule/NavigationBLoC/PerfilNavigationEvent.dart';
+
+import '../../FeedModule/NavigationBLoC/FeedNavigationBloc.dart';
+import '../../FeedModule/NavigationBLoC/FeedNavigationEvent.dart';
+import '../BLoC/ViewBLoC/PerfilEvent.dart';
+import '../BLoC/ViewBLoC/PerfilState.dart';
+import '../NavigationBLoC/PerfilNavigationBloc.dart';
 
 class Perfil extends StatefulWidget {
   final layoutConstrains = PerfilLayoutConstrains();
-  Perfil({Key? key}) : super(key: key);
+  final UserModel user;
+  Perfil({Key? key, required this.user}) : super(key: key);
 
   @override
   State<Perfil> createState() => _PerfilState();
@@ -11,11 +22,6 @@ class Perfil extends StatefulWidget {
 
 class _PerfilState extends State<Perfil> {
   final textDesign = TextDesign();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,21 +33,41 @@ class _PerfilState extends State<Perfil> {
           padding: EdgeInsets.symmetric(
               vertical: widget.layoutConstrains.verticalPadding,
               horizontal: widget.layoutConstrains.horizontalPadding),
-          child: Column(
-            children: [
-              _buildMainInfos(),
-              Padding(
-                  padding: EdgeInsets.only(
-                      top: widget.layoutConstrains.majorWidgetPadding),
-                  child: _buildGallery())
-            ],
+          child: BlocBuilder<PerfilBloc, PerfilState>(
+            builder: (BuildContext context, PerfilState state) {
+              return _mapStateToView(context, state);
+            },
           ),
         )),
       ),
     );
   }
 
-  Container _buildMainInfos() {
+  Widget _mapStateToView(BuildContext context, PerfilState state) {
+    switch (state.runtimeType) {
+      case PerfilInitialState:
+        return Column(
+          children: [
+            _buildMainInfos(widget.user.perfilPhoto.url),
+            Padding(
+                padding: EdgeInsets.only(
+                    top: widget.layoutConstrains.majorWidgetPadding),
+                child: _buildGallery(widget.user.galleryList))
+          ],
+        );
+      default:
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Center(
+            child: SizedBox(
+                width: 25, height: 25, child: CircularProgressIndicator()),
+          ),
+        );
+    }
+  }
+
+  Container _buildMainInfos(String perfilPhotoURL) {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -51,7 +77,7 @@ class _PerfilState extends State<Perfil> {
           Padding(
             padding: EdgeInsets.only(
                 top: widget.layoutConstrains.majorWidgetPadding),
-            child: _buildMainInfosSecondLayer(),
+            child: _buildMainInfosSecondLayer(perfilPhotoURL),
           ),
           Padding(
             padding: EdgeInsets.only(
@@ -71,14 +97,14 @@ class _PerfilState extends State<Perfil> {
           Padding(
             padding: EdgeInsets.only(
                 top: widget.layoutConstrains.mediumWidgetPadding),
-            child: _buildMainInfosSixthLayer(),
+            child: _buildMainInfosStoriesLayer(),
           ),
         ],
       ),
     );
   }
 
-  Container _buildGallery() {
+  Container _buildGallery(List<ImageModel> galleryList) {
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -89,7 +115,7 @@ class _PerfilState extends State<Perfil> {
                 top: widget.layoutConstrains.minorWidgetPadding),
             child: _buildGallerySecondLayer(),
           ),
-          _buildGalleryThirdLayer()
+          _buildGalleryGridView(galleryList)
         ],
       ),
     );
@@ -102,7 +128,8 @@ class _PerfilState extends State<Perfil> {
         SizedBox(
           child: Row(
             children: [
-              textDesign.buildText('brunoklemz', 22, FontWeight.bold, Colors.black),
+              textDesign.buildText(
+                  'brunoklemz', 22, FontWeight.bold, Colors.black),
               Padding(
                 padding:
                     EdgeInsets.only(left: widget.layoutConstrains.textPadding),
@@ -138,7 +165,7 @@ class _PerfilState extends State<Perfil> {
     );
   }
 
-  Row _buildMainInfosSecondLayer() {
+  Row _buildMainInfosSecondLayer(String perfilPhotoURL) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -147,8 +174,7 @@ class _PerfilState extends State<Perfil> {
           width: 90.0,
           decoration: BoxDecoration(
               shape: BoxShape.circle,
-              image: DecorationImage(
-                  image: AssetImage('assets/placeholderPhoto.jpg'))),
+              image: DecorationImage(image: NetworkImage(perfilPhotoURL))),
         ),
         Row(
           children: [
@@ -176,8 +202,8 @@ class _PerfilState extends State<Perfil> {
         textDesign.buildText('Bruno Klemz', 15, FontWeight.w600, Colors.black),
         Padding(
             padding: EdgeInsets.only(top: widget.layoutConstrains.textPadding),
-            child: textDesign.buildText(
-                'Engenharia Mecatrônica PUCPR', 15, FontWeight.normal, Colors.black)),
+            child: textDesign.buildText('Engenharia Mecatrônica PUCPR', 15,
+                FontWeight.normal, Colors.black)),
       ],
     );
   }
@@ -190,7 +216,8 @@ class _PerfilState extends State<Perfil> {
             height: 41,
             child: OutlinedButton(
                 onPressed: () {},
-                child: textDesign.buildText('Editar perfil', 15, FontWeight.w600, Colors.black)),
+                child: textDesign.buildText(
+                    'Editar perfil', 15, FontWeight.w600, Colors.black)),
           ),
         ),
         Padding(
@@ -216,22 +243,23 @@ class _PerfilState extends State<Perfil> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            textDesign.buildText('Destaques dos stories', 15, FontWeight.w600, Colors.black),
+            textDesign.buildText(
+                'Destaques dos stories', 15, FontWeight.w600, Colors.black),
             Icon(Icons.keyboard_arrow_up)
           ],
         ),
-        textDesign.buildText("Mantenha seus stories favoritos no seu perfil", 14,
-            FontWeight.normal, Colors.black)
+        textDesign.buildText("Mantenha seus stories favoritos no seu perfil",
+            14, FontWeight.normal, Colors.black)
       ],
     );
   }
 
-  Widget _buildMainInfosSixthLayer() {
+  Widget _buildMainInfosStoriesLayer() {
     return SizedBox(
         height: 75.0,
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 7,
+            itemCount: widget.user.personalStoriesList.length + 1,
             itemBuilder: _buildCards));
   }
 
@@ -261,26 +289,21 @@ class _PerfilState extends State<Perfil> {
     );
   }
 
-  Widget _buildGalleryThirdLayer() {
+  Widget _buildGalleryGridView(List<ImageModel> galleryList) {
     return SizedBox(
-      height: 2000,
+      height: 1000,
       width: MediaQuery.of(context).size.width,
-      child: GridView.count(
-        physics: NeverScrollableScrollPhysics(),
-        crossAxisCount: 3,
-        mainAxisSpacing: 1.5,
-        crossAxisSpacing: 1.5,
-        children: [
-          Image.asset("assets/placeholderPhoto.jpg"),
-          Image.asset("assets/placeholderPhoto.jpg"),
-          Image.asset("assets/placeholderPhoto.jpg"),
-          Image.asset("assets/placeholderPhoto.jpg"),
-          Image.asset("assets/placeholderPhoto.jpg"),
-          Image.asset("assets/placeholderPhoto.jpg"),
-          Image.asset("assets/placeholderPhoto.jpg"),
-          Image.asset("assets/placeholderPhoto.jpg"),
-        ],
-      ),
+      child: GridView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3, mainAxisSpacing: 10, crossAxisSpacing: 10),
+          itemCount: galleryList.length,
+          itemBuilder: (context, index) {
+            return Image.network(
+              galleryList[index].url,
+              fit: BoxFit.cover,
+            );
+          }),
     );
   }
 
@@ -294,9 +317,13 @@ class _PerfilState extends State<Perfil> {
         decoration: BoxDecoration(
             color: index == 0 ? Colors.white : Color(0xFFEFEFEF),
             shape: BoxShape.circle,
-            border: index == 0
-                ? Border.all(width: 1.5, color: Colors.black)
-                : null),
+            border:
+                index == 0 ? Border.all(width: 1.5, color: Colors.black) : null,
+            image: index == 0
+                ? null
+                : DecorationImage(
+                    image: NetworkImage(widget.user.personalStoriesList[index - 1].url),
+                    fit: BoxFit.cover)),
         child: Center(
           child: index == 0 ? Icon(Icons.add) : null,
         ),
@@ -314,14 +341,21 @@ class _PerfilState extends State<Perfil> {
   }
 
   BottomNavigationBar _buildBottomNavigationBar(BuildContext context) {
-    int _selectedIndex = 0;
     return BottomNavigationBar(
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
       ],
-      currentIndex: _selectedIndex,
-      onTap: (int index) {},
+      currentIndex: 2,
+      selectedItemColor: Colors.black,
+      unselectedItemColor: Colors.grey,
+      onTap: (int index) {
+        if (index == 0) {
+          BlocProvider.of<PerfilNavigationBloc>(context).add(
+              PerfilNavigationSwitchToFeedEvent(context: context, user: widget.user));
+        }
+      },
     );
   }
 }

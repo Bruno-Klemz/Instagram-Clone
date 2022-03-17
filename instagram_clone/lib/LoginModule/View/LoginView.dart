@@ -6,6 +6,8 @@ import 'package:instagram_clone/DesignSystem/TextInputDesign.dart';
 import 'package:instagram_clone/LoginModule/BLoC/ViewBLoC/LoginBloc.dart';
 import 'package:instagram_clone/LoginModule/BLoC/ViewBLoC/LoginEvent.dart';
 
+import '../BLoC/ViewBLoC/LoginState.dart';
+
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
 
@@ -56,18 +58,25 @@ class _LoginState extends State<Login> {
                   child: Image.asset('assets/Instagram-Logo.png')),
             ),
             Padding(
-              padding:
-                  EdgeInsets.only(top: layoutConstrains.mediumWidgetPadding),
-              child: textInputDesign.buildTextInput(
-                  "Número de telefone, email ou nome de usuário",
-                  loginController),
-            ),
+                padding:
+                    EdgeInsets.only(top: layoutConstrains.mediumWidgetPadding),
+                child: BlocBuilder<LoginBloc, LoginState>(
+                  builder: (BuildContext context, LoginState state) {
+                    return textInputDesign.buildTextInput(
+                        "Número de telefone, email ou nome de usuário",
+                        loginController, state);
+                  },
+                )),
             Padding(
-              padding:
-                  EdgeInsets.only(top: layoutConstrains.minorWidgetPadding),
-              child: textInputDesign.buildTextInput("Senha", passwordController,
-                  icon: Icons.lock),
-            ),
+                padding:
+                    EdgeInsets.only(top: layoutConstrains.minorWidgetPadding),
+                child: BlocBuilder<LoginBloc, LoginState>(
+                  builder: (BuildContext context, LoginState state) {
+                    return textInputDesign.buildTextInput(
+                        "Senha", passwordController, state,
+                        icon: Icons.lock,);
+                  },
+                )),
             Padding(
                 padding:
                     EdgeInsets.only(top: layoutConstrains.minorWidgetPadding),
@@ -234,5 +243,4 @@ class LoginLayoutConstrains {
       storiesCardSize = 25.0,
       perfilImageSize = 35.0,
       downwardArrowIconSize = 24.0;
-  LoginLayoutConstrains();
 }

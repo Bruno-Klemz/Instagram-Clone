@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/PerfilModule/View/PerfilView.dart';
 
+import 'Data/User/UserModel.dart';
 import 'FeedModule/View/FeedView.dart';
 import 'LoginModule/View/LoginView.dart';
 
@@ -11,10 +12,18 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => Login());
 
       case 'toFeed':
-        return MaterialPageRoute(builder: (_) => Feed());
+        if (settings.arguments != null) {
+          UserModel _castedArguments = settings.arguments as UserModel;
+          return MaterialPageRoute(builder: (_) => Feed(user: _castedArguments));
+        }
+        else{
+          return MaterialPageRoute(builder: (_) => Feed());
+        }
 
       case 'toPerfil':
-        return MaterialPageRoute(builder: (_) => Perfil());
+        final _castedArguments = settings.arguments as UserModel;
+        return MaterialPageRoute(
+            builder: (_) => Perfil(user: _castedArguments));
       default:
         return null;
     }
